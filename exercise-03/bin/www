@@ -71,15 +71,7 @@ function onListening() {
 
 io.on( 'connection', function( socket ) {
 	socket.emit( 'news', { hello: 'world' } );
-	// Handle Events for this socket
 	socket.on( 'my other event', function( data ) {
 		console.log( data );
-	} );
-	socket.on( 'button event', function( data ) {
-		console.log( "Apparently buttons=" + data.buttons );
-		var d = new Date();
-		setTimeout( function() {
-			io.emit( 'broadcast', { msg: 'Someone press the button at: ' + d } );
-		}, 2000 );
 	} );
 } );

@@ -1,44 +1,49 @@
-# Exercise 2 - Your First Socket
-### We'll create the example socket that fires and responds from client to server.
+# Exercise 3 - Your First User Triggered Socket
+### Let's give the user a button!
 
-- Run: `npm install socket.io@1.3.3 --save-dev` to get the socket library. *The --save-dev argument adds the entry to your package.json so that other devs can automatically get the appropriate libraries through an* `npm install` *later.*
-- Add the `io` declaration to your **www** file: 
-```
-var server = http.createServer( app );
-var io = require( 'socket.io' )( server );
-```
 
-And somewhere after that add the connection event logic:
+- Open up our frontend file: *index.ejs* and add a button to your page. Attach an event to that button that runs `socket.emit( 'button event', {buttons: 'rule'} );`
+- Open up our backend counterpart: *bin/www* and towards the bottom, immediately after our socket event that handled the "my other event" emit, add 
 
 ```
-io.on( 'connection', function( socket ) {
-	socket.emit( 'news', { hello: 'world' } );
-	socket.on( 'my other event', function( data ) {
-		console.log( data );
-	} );
+socket.on( 'button event', function( data ) {
+	console.log( "Apparently buttons=" + data.buttons );
 } );
 ```
 
-This is what fires when the server receives a **connection** event from a client. The callback here emits a **news** event with a data object back to the client and then creates a handler on this particular **socket** (*which is tied to this particular client/person/connection*) that responds to an event we're calling **'my other event'**. 
+- Now with both your server terminal and your webpage open your should be able to see the events hitting your server. But let's have them bounce back at a delay to see the broadcasting side.
+- First let's add the return message from the server by adding a timeout call in the "button event". This is an example of a single-socket response.
 
-- Add the client side of [socket.io](http://socket.io) by throwing this block into the `<head>` of your view, **index.ejs**.
 ```
-<script src="https://cdn.socket.io/socket.io-1.3.3.js"></script>
-<script>
-        var socket = io.connect( 'http://localhost:3000' );
-        socket.on( 'news', function( data ) {
-            console.log( data );
-            socket.emit( 'my other event', { my: 'data' } );
-        } );
-</script>
+socket.on( 'button event', function( data ) {
+		console.log( "Apparently buttons=" + data.buttons );
+		setTimeout( function() {
+			socket.emit( 'broadcast', { msg: 'my message here!' } );
+		}, 2000 );
+	} );
 ```
 
-Now if you fire up your server and connect to [localhost:3000](http://localhost:3000) with the dev console open you should see the server reply to the client with
+- Now I'm going to add JQuery for easier future DOM manipulating
+- Second we need to log that out on the frontend to verify that it happened. Let's make it appear in the DOM. Add a div with an id attribute somewhere in your DOM. Then add a socket event to catch your "holla back" event and put its contents into that div. Something like this should work
+
 ```
- Object {hello: "world"}
+socket.on( 'broadcast', function( data ) {
+	$( "#display" ).append( $( '<p>' ).html( data.msg ) );
+} );
 ```
 
-and you should see in the terminal/console of your Node app
+### Lastly let's see something more powerful, the broadcast in Socket. Let's change our single-socket response to announce a message to EVERYONE
+- First we'll change our server-side event. We need to emit to all sockets, one implementation SocketIO has is to use `io.sockets.emit(eventName, data)` or `io.emit(eventName, data)`
+- Let's change our "button event" handler in *bin/www* to broadcast instead of simply responding:
+
 ```
-{ my: 'data' }
+socket.on( 'button event', function( data ) {
+		console.log( "Apparently buttons=" + data.buttons );
+		var d = new Date();
+		setTimeout( function() {
+			io.emit( 'broadcast', { msg: 'Someone press the button at: ' + d } );
+		}, 2000 );
+	} );
 ```
+
+- Now restart your server and open two browser windows to your localhost. If you click on the button in one window you will see that the message gets sent to both. 
