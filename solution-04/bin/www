@@ -69,7 +69,21 @@ function onListening() {
 	debug( 'Listening on ' + bind );
 }
 
+setInterval( function() {
+	// Gather ids
+	var ids = [];
+	for( var id in io.to( 'my room' ).connected ) {
+		if( io.to( 'my room' ).connected.hasOwnProperty( id ) ) {
+			ids.push( id );
+		}
+	}
+	io.to( 'my room' ).emit( 'people', {room: ids} );
+}, 2000 );
+
 io.on( 'connection', function( socket ) {
+	// Place users into "my room" by default
+	socket.join( 'my room' );
+	// Fire news event immediately
 	socket.emit( 'news', { hello: 'world' } );
 	// Handle Events for this socket
 	socket.on( 'my other event', function( data ) {
