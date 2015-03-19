@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%= title %></title>
+		<link rel='stylesheet' href='/stylesheets/style.css'/>
+		<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+		<script src="https://cdn.socket.io/socket.io-1.3.3.js"></script>
+		<script>
+			var socket = io.connect( 'http://localhost:3000' );
+			socket.on( 'news', function( data ) {
+				console.log( data );
+				socket.emit( 'my other event', { my: 'data' } );
+			} );
+
+			socket.on( 'broadcast', function( data ) {
+				$( "#display" ).append( $( '<p>' ).html( data.msg ) );
+			} );
+
+			socket.on( 'people', function( data ) {
+				console.log(data.room);
+			} );
+
+			function socketButton() {
+				socket.emit( 'button event', {buttons: 'rule'} );
+			}
+		</script>
+	</head>
+	<body>
+		<h1><%= title %></h1>
+
+		<p>Welcome to <%= title %></p>
+
+		<div id="display"></div>
+		<button id="our-button" onclick="javascript:socketButton()">SEND</button>
+	</body>
+</html>

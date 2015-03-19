@@ -54,5 +54,5 @@ socket.on( 'people', function( data ) {
 ```
 
 - To test, start your server, open two browser windows. Goto [localhost:3000](localhost:3000) in the first window, open the console and notice the array with your socket id outputting.
-- Not goto your second browser window and goto [localhost:3000](localhost:3000) and watch the console in the first window up date it's console statements to reflect the new socket id as well!
+- Now goto your second browser window and goto [localhost:3000](localhost:3000) and watch the console in the first window update its console statements to reflect the new socket id!
  
