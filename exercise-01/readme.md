@@ -15,3 +15,9 @@ First we'll grab that package.
 }
 ```
 to see that property.
+
+### Troubleshooting
+Win8.1 x64 users may need to try the following if node-gyp fails:
+
+1. Install VS 2012 Express for Windows - [http://www.microsoft.com/en-us/download/details.aspx?id=34673]()
+2. Install Windows SDK for Windows 8.1 - [https://msdn.microsoft.com/en-us/windows/desktop/bg162891.aspx]()

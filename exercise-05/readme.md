@@ -49,5 +49,5 @@ socket.on( 'login', function(data) {
 ```
 
 ### Try it out
-- Do the same check as we did last exercise except that once you see both ids appearing in the console, fill a name into one window's input box and click its LOGIN button
+- Do the same check as we did last exercise except that once you see both ids appearing in the console, fill a name into one window's input box and click its **LOGIN** button
 - You should see the console output change to reflect the name we entered instead of the socket id

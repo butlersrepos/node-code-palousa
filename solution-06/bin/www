@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 
 /** Module dependencies. */
-var app = require( '../app' );
+var app = require( '../app' ).app;
+var server = require( '../app' ).server;
 var debug = require( 'debug' )( 'node-presentation:server' );
-var http = require( 'http' );
 
 /** Get port from environment and store in Express. */
 var port = normalizePort( process.env.PORT || '3000' );
 app.set( 'port', port );
 
-/** Create HTTP server. */
-var server = http.createServer( app );
-var io = require( 'socket.io' )( server );
+var io = require( '../app' ).io;
 
 /** Listen on provided port, on all network interfaces. */
 server.listen( port );
@@ -74,7 +72,13 @@ setInterval( function() {
 	var ids = [];
 	for( var id in io.to( 'my room' ).connected ) {
 		if( io.to( 'my room' ).connected.hasOwnProperty( id ) ) {
-			ids.push( id );
+			var thisSocket = io.to( 'my room' ).connected[id];
+			var thisClient = thisSocket.client;
+			if( thisClient.username ) {
+				ids.push( thisClient.username );
+			} else {
+				ids.push( id );
+			}
 		}
 	}
 	io.to( 'my room' ).emit( 'people', {room: ids} );
@@ -95,5 +99,9 @@ io.on( 'connection', function( socket ) {
 		setTimeout( function() {
 			io.emit( 'broadcast', {msg: 'Someone pressed the button at: ' + d} );
 		}, 2000 );
+	} );
+	socket.on( 'login', function( data ) {
+		console.log( "Received login with name = " + data.name );
+		socket.client.username = data.name;
 	} );
 } );

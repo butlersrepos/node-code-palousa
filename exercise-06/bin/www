@@ -74,7 +74,13 @@ setInterval( function() {
 	var ids = [];
 	for( var id in io.to( 'my room' ).connected ) {
 		if( io.to( 'my room' ).connected.hasOwnProperty( id ) ) {
-			ids.push( id );
+			var thisSocket = io.to( 'my room' ).connected[id];
+			var thisClient = thisSocket.client;
+			if( thisClient.username ) {
+				ids.push(thisClient.username);
+			} else {
+				ids.push( id );
+			}
 		}
 	}
 	io.to( 'my room' ).emit( 'people', {room: ids} );
@@ -84,7 +90,7 @@ io.on( 'connection', function( socket ) {
 	// Place users into "my room" by default
 	socket.join( 'my room' );
 	// Fire news event immediately
-	socket.emit( 'news', {hello: 'world'} );
+	socket.emit( 'news', { hello: 'world' } );
 	// Handle Events for this socket
 	socket.on( 'my other event', function( data ) {
 		console.log( data );
@@ -93,7 +99,11 @@ io.on( 'connection', function( socket ) {
 		console.log( "Apparently buttons=" + data.buttons );
 		var d = new Date();
 		setTimeout( function() {
-			io.emit( 'broadcast', {msg: 'Someone pressed the button at: ' + d} );
+			io.emit( 'broadcast', { msg: 'Someone pressed the button at: ' + d } );
 		}, 2000 );
 	} );
+	socket.on( 'login', function(data) {
+		console.log("Received login with name = " + data.name);
+		socket.client.username = data.name;
+	});
 } );
