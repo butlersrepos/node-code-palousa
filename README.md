@@ -21,7 +21,9 @@ This repo follows along with a presentation intended to incrementally guide the 
 
 * install [node.js](http://nodejs.org/download/)
 * I recommend [IntelliJ or Webstorm](https://www.jetbrains.com/webstorm/) if you're into IDEs
+* I also recommend a good shell if you're on Windows, [Cmder](http://gooseberrycreative.com/cmder/) is a good one
 * git clone this repo, maybe [install git](http://git-scm.com) first
-* the readme.md in each exercise-XX directory explains your goal
-* the solution-XX directories correspond to the exercise-XX ones and show you one way I solved the exercise (There are MANY acceptable solutions)
-* each exercise after exercise-01 starts with the app found in the previous solution's folder
+* decide if you want to start at the **intro** level or start with the **express** exercises
+* the readme.md in each **intro** or **express-exercise** directory explains your goal
+* the **solution-XX** directories correspond to the **exercise-XX** ones and show you one way I solved the exercise (There are MANY acceptable solutions)
+* each **express-exercise** starts with the app found in the previous **express-solution**'s folder
