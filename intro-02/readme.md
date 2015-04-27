@@ -27,5 +27,4 @@ http.createServer( function(req, res) {} );
 ```
 
 ### Try it out
-Our callback is the end-all be-all of our request handling at the moment, you could easily imagine a primitive router via `switch` statement placed in there.
-If you want to serve a file you could try such an operation by `readFile`ing like we did in the previous exercise but when you get to your callback `write` the contents to the response. 
+Our callback is the end-all be-all of our request handling at the moment, you could easily imagine a primitive router via some `switch` statement placed in there.
