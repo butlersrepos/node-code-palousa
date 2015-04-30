@@ -18,7 +18,7 @@ switch( urlPieces.pathname ) {
 - Let's make our first `case` catch the '/hello' pathname and do what we were doing, saying 'Hello World'
 - We'll make another route (`case`) for '/file'
 - To serve a file you could try `readFile`ing like we did in the previous exercise, I'll be using `readFileSync` which takes no callback and returns the contents of the file directly.
-- NOTE: if you create a .txt file in the same directory then the easiest way to pass it to `readFileSync` is by `__dirname + 'myFile.txt'`
+- NOTE: if you create a .txt file in the same directory then the easiest way to pass it to `readFileSync` is by `__dirname + '/myFile.txt'`
 - Our last route will be a `default` that just notifies the client that there's nothing here
 - I've written these all as `res.write()` operations and then tacked a `res.end()` after the switch
 
